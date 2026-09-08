@@ -183,6 +183,161 @@ Abre `frontend/index.html` directamente en el navegador:
 
 ---
 
+## 🐧 Ejecución alternativa en WSL2 + Ubuntu
+
+Esta sección es opcional. El proyecto puede ejecutarse normalmente en Windows siguiendo las instrucciones anteriores. Los siguientes pasos están dirigidos a desarrolladores que prefieran utilizar WSL2 con Ubuntu.
+
+### 1. Requisitos en WSL
+
+Para ejecutar el entorno en WSL se necesita:
+
+- Windows con **WSL2** habilitado.
+- Una distribución **Ubuntu** instalada.
+- **Git** instalado dentro de Ubuntu.
+- **Node.js** (v18 o superior) y **npm** dentro de Ubuntu.
+- Acceso a **Oracle Database**.
+
+> **Nota sobre Oracle Database:**  
+> La base de datos puede estar:
+> - **A)** Instalada o accesible externamente (por ejemplo, en el sistema operativo Windows anfitrión o en un servidor remoto).
+> - **B)** Ejecutándose mediante un contenedor Docker.
+>
+> *Docker no es obligatorio para el proyecto*; es simplemente una de las alternativas posibles para disponer de la base de datos.
+
+### 2. Clonar el proyecto
+
+Ejecuta en la terminal de Ubuntu:
+
+```bash
+git clone https://github.com/DavidRoyero05/PrestamoEquipos.git
+cd PrestamoEquipos
+```
+
+> **Recomendación:** Es preferible clonar y trabajar dentro del propio filesystem de Ubuntu (por ejemplo en `~/proyectos/PrestamoEquipos`), en lugar de depender de rutas absolutas o montadas de Windows (como `C:\...`, `D:\...` o `/mnt/c/...`), para asegurar un rendimiento óptimo y evitar problemas con permisos de Linux.
+
+### 3. Instalar dependencias
+
+Ingresa a la carpeta del backend e instala las dependencias:
+
+```bash
+cd backend
+npm install
+```
+
+> La carpeta `node_modules` no viene incluida en Git y debe generarse nuevamente en cada entorno mediante `npm install`.
+
+### 4. Configurar .env en Linux
+
+Desde la raíz del proyecto (`PrestamoEquipos/`), copia el archivo de plantilla:
+
+```bash
+cp .env.example .env
+```
+
+> Mientras que en Windows la documentación utiliza `copy .env.example .env`, en Linux/Ubuntu el comando correcto es `cp .env.example .env`.
+
+Edita el archivo `.env` configurando los valores correspondientes:
+
+```env
+DB_USER=PRESTAMOS_APP
+DB_PASSWORD=TU_CONTRASEÑA
+DB_CONNECT_STRING=localhost:1521/XEPDB1
+PORT=3000
+```
+
+Ten presente que:
+- Cada desarrollador debe colocar su propia contraseña en `DB_PASSWORD`.
+- El archivo `.env` contiene credenciales locales y **no debe subirse a Git** (se encuentra protegido en el `.gitignore`).
+- El archivo `.env.example` sí permanece en el repositorio como guía.
+
+### 5. Configuración de Oracle Database
+
+El proyecto necesita Oracle Database independientemente del sistema operativo donde se ejecute el backend.
+
+Para WSL existen dos posibilidades:
+
+- **OPCIÓN A — Oracle accesible externamente:**  
+  Si Oracle está disponible en Windows, en otro servidor o en una instancia de red accesible, configura la variable `DB_CONNECT_STRING` según el host correspondiente (por ejemplo `localhost:1521/XEPDB1`).
+
+- **OPCIÓN B — Oracle mediante Docker:**  
+  Conceptualmente, es posible ejecutar una instancia compatible de Oracle dentro de un contenedor Docker.  
+  *Importante:* Actualmente el repositorio **no** incluye `docker-compose.yml` ni `Dockerfile` para Oracle. Por lo tanto, no se debe asumir que `docker compose up` esté disponible en el proyecto; es una alternativa que debe configurarse por separado e independientemente por el desarrollador.
+
+Una vez que Oracle esté disponible y accesible, el desarrollador debe:
+
+1. Crear y configurar el usuario `PRESTAMOS_APP`.
+2. Conceder los permisos necesarios para tablas, secuencias y triggers (`CONNECT`, `RESOURCE`, cuota en `USERS`).
+3. Ejecutar el archivo:
+   ```bash
+   database/script.sql
+   ```
+   para crear:
+   - Tabla `EQUIPOS`
+   - Tabla `PRESTAMOS`
+   - Relaciones y restricciones de integridad
+   - Secuencias y triggers para IDs automáticos
+   - Datos iniciales de prueba
+
+### 6. Iniciar el backend desde Ubuntu
+
+Desde el directorio `PrestamoEquipos/backend`, ejecuta:
+
+```bash
+npm start
+```
+
+El servidor quedará disponible aproximadamente en:
+- `http://localhost:3000`
+
+Endpoints principales para verificar su funcionamiento:
+- `http://localhost:3000/api/equipos`
+- `http://localhost:3000/api/prestamos`
+
+### 7. Frontend
+
+El frontend está construido con tecnologías web nativas: **HTML5, CSS3 y JavaScript puro**.
+
+Puede servirse mediante un servidor HTTP local. Si se utiliza una herramienta como `serve`, puedes ejecutar por ejemplo:
+
+```bash
+npx serve frontend
+```
+
+*(Nota: `serve` no es una dependencia obligatoria del proyecto).*
+
+> **Aviso:** No se recomienda abrir `index.html` directamente con el protocolo `file://` (doble clic) como opción principal debido a las restricciones de seguridad del navegador para cargar módulos JavaScript (`ES Modules`). Debe servirse a través de un servidor HTTP local.
+
+### 8. Pruebas con Postman
+
+La colección disponible en:
+- `postman/PrestamoEquipos.postman_collection.json`
+
+también funciona perfectamente aunque el backend se ejecute dentro de WSL, siempre que `http://localhost:3000` sea accesible desde Windows (WSL2 realiza reenvío de puertos a localhost en Windows de forma transparente).
+
+### 9. Diferencias principales: Windows vs WSL / Ubuntu
+
+| Acción / Característica | Windows | WSL / Ubuntu |
+|---|---|---|
+| **Copiar archivo `.env`** | `copy .env.example .env` | `cp .env.example .env` |
+| **Separador de rutas** | `\` (barra invertida) | `/` (barra diagonal) |
+| **Ejemplo de ruta de trabajo** | `D:\Proyectos\PrestamoEquipos` | `~/proyectos/PrestamoEquipos` |
+| **Iniciar backend** | `npm start` | `npm start` |
+| **Instalar dependencias** | `npm install` | `npm install` |
+
+### 10. Portabilidad del proyecto
+
+El código principal del proyecto es totalmente portable entre Windows y Linux porque utiliza tecnologías estándar: **Node.js**, **Express**, **HTML**, **CSS**, **JavaScript** y configuración centralizada mediante **variables de entorno**.
+
+Lo que puede variar entre diferentes equipos y entornos es:
+- El proceso de instalación de Node.js.
+- La ubicación y acceso a Oracle Database (local en Windows, remota o en contenedor).
+- La contraseña asignada al usuario `PRESTAMOS_APP`.
+- El valor configurado en `DB_CONNECT_STRING`.
+- Los comandos propios de cada sistema operativo (por ejemplo `copy` vs `cp`).
+- La disponibilidad de puertos de red ocupados en la máquina.
+
+---
+
 ## 🌐 Endpoints de la API
 
 ### Equipos
