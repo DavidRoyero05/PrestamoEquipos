@@ -7,7 +7,8 @@
     <title>Sistema de Préstamo de Equipos Tecnológicos</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- ============================================ -->
@@ -15,18 +16,23 @@
     <!-- ============================================ -->
     <header class="header">
         <div class="header__logo">
-            <span class="header__icono">🖥️</span>
-            <h1 class="header__titulo">Préstamo de Equipos</h1>
+            <div class="header__icono-wrapper">
+                <span class="header__icono">🖥️</span>
+            </div>
+            <div class="header__titulos">
+                <h1 class="header__titulo">Préstamo de Equipos</h1>
+                <span class="header__subtitulo">Gestión de equipos tecnológicos</span>
+            </div>
         </div>
-        <nav class="nav">
+        <nav class="nav" aria-label="Navegación principal">
             <button class="nav__btn nav__btn--activo" data-seccion="panel" id="btn-nav-panel">
-                📊 Panel
+                <span class="nav__btn-icono">📊</span> Panel
             </button>
             <button class="nav__btn" data-seccion="equipos" id="btn-nav-equipos">
-                💻 Equipos
+                <span class="nav__btn-icono">💻</span> Equipos
             </button>
             <button class="nav__btn" data-seccion="prestamos" id="btn-nav-prestamos">
-                📋 Préstamos
+                <span class="nav__btn-icono">📋</span> Préstamos
             </button>
         </nav>
     </header>
@@ -40,41 +46,133 @@
         <!-- SECCIÓN: PANEL PRINCIPAL                 -->
         <!-- ======================================== -->
         <section class="seccion seccion--activa" id="seccion-panel">
-            <h2 class="seccion__titulo">Panel Principal</h2>
+            <div class="seccion__cabecera">
+                <h2 class="seccion__titulo">Panel Principal</h2>
+                <p class="seccion__subtexto">Monitoreo general de inventario, disponibilidad y préstamos en curso.</p>
+            </div>
+
+            <!-- Tarjetas de resumen métrico -->
             <div class="tarjetas" id="tarjetas-resumen">
                 <div class="tarjeta tarjeta--total">
-                    <span class="tarjeta__icono">📦</span>
+                    <div class="tarjeta__icono-caja">
+                        <span class="tarjeta__icono">📦</span>
+                    </div>
                     <div class="tarjeta__info">
-                        <span class="tarjeta__numero" id="total-equipos">0</span>
                         <span class="tarjeta__etiqueta">Total Equipos</span>
+                        <span class="tarjeta__numero" id="total-equipos">0</span>
+                        <span class="tarjeta__detalle">En inventario</span>
                     </div>
                 </div>
                 <div class="tarjeta tarjeta--disponible">
-                    <span class="tarjeta__icono">✅</span>
+                    <div class="tarjeta__icono-caja">
+                        <span class="tarjeta__icono">✅</span>
+                    </div>
                     <div class="tarjeta__info">
-                        <span class="tarjeta__numero" id="total-disponibles">0</span>
                         <span class="tarjeta__etiqueta">Disponibles</span>
+                        <span class="tarjeta__numero" id="total-disponibles">0</span>
+                        <span class="tarjeta__detalle">Listos para entrega</span>
                     </div>
                 </div>
                 <div class="tarjeta tarjeta--prestado">
-                    <span class="tarjeta__icono">🔄</span>
+                    <div class="tarjeta__icono-caja">
+                        <span class="tarjeta__icono">🔄</span>
+                    </div>
                     <div class="tarjeta__info">
-                        <span class="tarjeta__numero" id="total-prestados">0</span>
                         <span class="tarjeta__etiqueta">Prestados</span>
+                        <span class="tarjeta__numero" id="total-prestados">0</span>
+                        <span class="tarjeta__detalle">En uso por usuarios</span>
                     </div>
                 </div>
                 <div class="tarjeta tarjeta--mantenimiento">
-                    <span class="tarjeta__icono">🔧</span>
+                    <div class="tarjeta__icono-caja">
+                        <span class="tarjeta__icono">🔧</span>
+                    </div>
                     <div class="tarjeta__info">
-                        <span class="tarjeta__numero" id="total-mantenimiento">0</span>
                         <span class="tarjeta__etiqueta">En Mantenimiento</span>
+                        <span class="tarjeta__numero" id="total-mantenimiento">0</span>
+                        <span class="tarjeta__detalle">Revisión o servicio</span>
                     </div>
                 </div>
                 <div class="tarjeta tarjeta--activo">
-                    <span class="tarjeta__icono">📋</span>
+                    <div class="tarjeta__icono-caja">
+                        <span class="tarjeta__icono">📋</span>
+                    </div>
                     <div class="tarjeta__info">
-                        <span class="tarjeta__numero" id="total-prestamos-activos">0</span>
                         <span class="tarjeta__etiqueta">Préstamos Activos</span>
+                        <span class="tarjeta__numero" id="total-prestamos-activos">0</span>
+                        <span class="tarjeta__detalle">Pendientes por devolver</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bloques complementarios del panel -->
+            <div class="panel-grid">
+                <!-- Bloque B: Estado del laboratorio -->
+                <div class="panel-bloque" id="bloque-estado-laboratorio">
+                    <div class="panel-bloque__cabecera">
+                        <div class="panel-bloque__titulos">
+                            <h3 class="panel-bloque__titulo">📊 Estado del Laboratorio</h3>
+                            <span class="panel-bloque__subtitulo">Distribución y disponibilidad de los equipos</span>
+                        </div>
+                    </div>
+                    <div class="panel-bloque__cuerpo">
+                        <!-- Barra de distribución visual -->
+                        <div class="barra-distribucion" title="Distribución de estados">
+                            <div class="barra-segmento barra-segmento--disponible" id="barra-disp" style="width: 0%;"></div>
+                            <div class="barra-segmento barra-segmento--prestado" id="barra-prest" style="width: 0%;"></div>
+                            <div class="barra-segmento barra-segmento--mantenimiento" id="barra-mant" style="width: 0%;"></div>
+                        </div>
+
+                        <!-- Indicadores de métricas -->
+                        <div class="panel-metricas">
+                            <div class="metrica-item metrica-item--disponible">
+                                <div class="metrica-item__indicador">
+                                    <span class="punto-estado punto-estado--disponible"></span>
+                                    <span class="metrica-item__label">Disponibles</span>
+                                </div>
+                                <div class="metrica-item__valores">
+                                    <strong class="metrica-item__porcentaje" id="pct-disponibles">0%</strong>
+                                    <span class="metrica-item__conteo" id="cnt-disponibles">(0 equipos)</span>
+                                </div>
+                            </div>
+
+                            <div class="metrica-item metrica-item--prestado">
+                                <div class="metrica-item__indicador">
+                                    <span class="punto-estado punto-estado--prestado"></span>
+                                    <span class="metrica-item__label">En Préstamo</span>
+                                </div>
+                                <div class="metrica-item__valores">
+                                    <strong class="metrica-item__porcentaje" id="pct-prestados">0%</strong>
+                                    <span class="metrica-item__conteo" id="cnt-prestados">(0 equipos)</span>
+                                </div>
+                            </div>
+
+                            <div class="metrica-item metrica-item--mantenimiento">
+                                <div class="metrica-item__indicador">
+                                    <span class="punto-estado punto-estado--mantenimiento"></span>
+                                    <span class="metrica-item__label">Mantenimiento</span>
+                                </div>
+                                <div class="metrica-item__valores">
+                                    <strong class="metrica-item__porcentaje" id="pct-mantenimiento">0%</strong>
+                                    <span class="metrica-item__conteo" id="cnt-mantenimiento">(0 equipos)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloque A: Actividad reciente -->
+                <div class="panel-bloque" id="bloque-actividad-reciente">
+                    <div class="panel-bloque__cabecera">
+                        <div class="panel-bloque__titulos">
+                            <h3 class="panel-bloque__titulo">🕒 Actividad Reciente</h3>
+                            <span class="panel-bloque__subtitulo">Últimos movimientos registrados en el sistema</span>
+                        </div>
+                    </div>
+                    <div class="panel-bloque__cuerpo">
+                        <div class="actividad-lista" id="lista-actividad-reciente">
+                            <p class="tabla__vacio" id="actividad-vacio">No hay registros de actividad reciente.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,46 +182,52 @@
         <!-- SECCIÓN: GESTIÓN DE EQUIPOS              -->
         <!-- ======================================== -->
         <section class="seccion" id="seccion-equipos">
-            <h2 class="seccion__titulo">Gestión de Equipos</h2>
+            <div class="seccion__cabecera">
+                <h2 class="seccion__titulo">Gestión de Equipos</h2>
+                <p class="seccion__subtexto">Alta, modificación, control de estado y catálogo general de equipos.</p>
+            </div>
 
             <!-- Formulario de equipo -->
             <div class="formulario-contenedor">
-                <h3 class="formulario__subtitulo" id="titulo-form-equipo">Registrar Nuevo Equipo</h3>
+                <div class="formulario__header">
+                    <h3 class="formulario__subtitulo" id="titulo-form-equipo">Registrar Nuevo Equipo</h3>
+                    <span class="formulario__ayuda">Complete los campos requeridos marcados con (*)</span>
+                </div>
                 <form id="form-equipo" class="formulario">
                     <input type="hidden" id="equipo-id">
                     <div class="formulario__grupo">
-                        <label for="equipo-nombre" class="formulario__label">Nombre *</label>
+                        <label for="equipo-nombre" class="formulario__label">Nombre del Equipo *</label>
                         <input type="text" id="equipo-nombre" class="formulario__input" 
                                placeholder="Ej: Laptop Dell Latitude 5520" required>
                     </div>
                     <div class="formulario__grupo">
-                        <label for="equipo-tipo" class="formulario__label">Tipo *</label>
+                        <label for="equipo-tipo" class="formulario__label">Tipo / Categoría *</label>
                         <input type="text" id="equipo-tipo" class="formulario__input" 
                                placeholder="Ej: Laptop, Proyector, Tablet" required>
                     </div>
                     <div class="formulario__grupo">
-                        <label for="equipo-serial" class="formulario__label">Serial *</label>
+                        <label for="equipo-serial" class="formulario__label">Número de Serial *</label>
                         <input type="text" id="equipo-serial" class="formulario__input" 
                                placeholder="Ej: DLL-5520-001" required>
                     </div>
                     <div class="formulario__grupo">
-                        <label for="equipo-estado" class="formulario__label">Estado</label>
+                        <label for="equipo-estado" class="formulario__label">Estado Inicial</label>
                         <select id="equipo-estado" class="formulario__select">
                             <option value="DISPONIBLE">Disponible</option>
                             <option value="MANTENIMIENTO">Mantenimiento</option>
                         </select>
                     </div>
                     <div class="formulario__grupo formulario__grupo--ancho">
-                        <label for="equipo-observacion" class="formulario__label">Observación</label>
+                        <label for="equipo-observacion" class="formulario__label">Observación o Especificaciones</label>
                         <textarea id="equipo-observacion" class="formulario__textarea" rows="2"
-                                  placeholder="Observaciones opcionales sobre el equipo"></textarea>
+                                  placeholder="Detalles técnicos, accesorios o comentarios adicionales"></textarea>
                     </div>
                     <div class="formulario__acciones">
                         <button type="submit" class="btn btn--primario" id="btn-guardar-equipo">
                             💾 Guardar Equipo
                         </button>
                         <button type="button" class="btn btn--secundario" id="btn-cancelar-equipo" style="display:none;">
-                            ✖ Cancelar
+                            ✖ Cancelar Edición
                         </button>
                     </div>
                 </form>
@@ -132,13 +236,14 @@
             <!-- Búsqueda y filtros -->
             <div class="filtros">
                 <div class="filtros__busqueda">
-                    <input type="text" id="busqueda-equipo" class="formulario__input" 
-                           placeholder="🔍 Buscar por nombre o serial...">
+                    <span class="filtros__icono-busqueda">🔍</span>
+                    <input type="text" id="busqueda-equipo" class="formulario__input filtros__input" 
+                           placeholder="Buscar por nombre o serial...">
                 </div>
                 <div class="filtros__estado">
-                    <label class="formulario__label">Filtrar por estado:</label>
+                    <label for="filtro-estado-equipo" class="filtros__label">Estado:</label>
                     <select id="filtro-estado-equipo" class="formulario__select">
-                        <option value="TODOS">Todos</option>
+                        <option value="TODOS">Todos los estados</option>
                         <option value="DISPONIBLE">Disponible</option>
                         <option value="PRESTADO">Prestado</option>
                         <option value="MANTENIMIENTO">Mantenimiento</option>
@@ -151,13 +256,13 @@
                 <table class="tabla" id="tabla-equipos">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th style="width: 70px;">ID</th>
                             <th>Nombre</th>
                             <th>Tipo</th>
                             <th>Serial</th>
                             <th>Estado</th>
                             <th>Observación</th>
-                            <th>Acciones</th>
+                            <th style="width: 170px; text-align: center;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="cuerpo-tabla-equipos">
@@ -174,11 +279,17 @@
         <!-- SECCIÓN: GESTIÓN DE PRÉSTAMOS            -->
         <!-- ======================================== -->
         <section class="seccion" id="seccion-prestamos">
-            <h2 class="seccion__titulo">Gestión de Préstamos</h2>
+            <div class="seccion__cabecera">
+                <h2 class="seccion__titulo">Gestión de Préstamos</h2>
+                <p class="seccion__subtexto">Registro de salidas, seguimiento de préstamos activos y archivo histórico de devoluciones.</p>
+            </div>
 
             <!-- Formulario de préstamo -->
             <div class="formulario-contenedor">
-                <h3 class="formulario__subtitulo">Registrar Nuevo Préstamo</h3>
+                <div class="formulario__header">
+                    <h3 class="formulario__subtitulo">Registrar Nuevo Préstamo</h3>
+                    <span class="formulario__ayuda">Seleccione un equipo disponible y asigne los datos del responsable</span>
+                </div>
                 <form id="form-prestamo" class="formulario">
                     <div class="formulario__grupo">
                         <label for="prestamo-equipo" class="formulario__label">Equipo Disponible *</label>
@@ -188,14 +299,14 @@
                         </select>
                     </div>
                     <div class="formulario__grupo">
-                        <label for="prestamo-responsable" class="formulario__label">Responsable *</label>
+                        <label for="prestamo-responsable" class="formulario__label">Nombre del Responsable *</label>
                         <input type="text" id="prestamo-responsable" class="formulario__input" 
-                               placeholder="Nombre completo del responsable" required>
+                               placeholder="Ej: David Royero" required>
                     </div>
                     <div class="formulario__grupo">
-                        <label for="prestamo-identificacion" class="formulario__label">Identificación *</label>
+                        <label for="prestamo-identificacion" class="formulario__label">Documento de Identificación *</label>
                         <input type="text" id="prestamo-identificacion" class="formulario__input" 
-                               placeholder="Número de identificación" required>
+                               placeholder="Número de cédula o carné" required>
                     </div>
                     <div class="formulario__grupo">
                         <label for="prestamo-fecha" class="formulario__label">Fecha de Préstamo *</label>
@@ -214,62 +325,78 @@
             </div>
 
             <!-- ======================================== -->
-            <!-- PRÉSTAMOS ACTIVOS                        -->
+            <!-- PRÉSTAMOS ACTIVOS (PROTAGONISMO VISUAL)  -->
             <!-- ======================================== -->
-            <h3 class="seccion__subtitulo">📋 Préstamos Activos</h3>
-            <div class="tabla-contenedor">
-                <table class="tabla" id="tabla-prestamos-activos">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Equipo</th>
-                            <th>Responsable</th>
-                            <th>Identificación</th>
-                            <th>Fecha Préstamo</th>
-                            <th>Fecha Devolución</th>
-                            <th>Estado</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cuerpo-tabla-prestamos-activos">
-                        <!-- Se llena dinámicamente con JavaScript -->
-                    </tbody>
-                </table>
-                <p class="tabla__vacio" id="prestamos-activos-vacio" style="display:none;">
-                    No hay préstamos activos.
-                </p>
+            <div class="prestamos-bloque prestamos-bloque--activos">
+                <div class="bloque-titulo-fila">
+                    <h3 class="seccion__subtitulo seccion__subtitulo--activos">
+                        <span class="subtitulo-icono">📋</span> Préstamos Activos
+                    </h3>
+                    <span class="etiqueta-prioridad">Vigentes</span>
+                </div>
+                <div class="tabla-contenedor tabla-contenedor--activos">
+                    <table class="tabla" id="tabla-prestamos-activos">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">ID</th>
+                                <th>Equipo</th>
+                                <th>Responsable</th>
+                                <th>Identificación</th>
+                                <th>Fecha Préstamo</th>
+                                <th>Fecha Devolución</th>
+                                <th>Estado</th>
+                                <th style="width: 120px; text-align: center;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-tabla-prestamos-activos">
+                            <!-- Se llena dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="tabla__vacio" id="prestamos-activos-vacio" style="display:none;">
+                        No hay préstamos activos en este momento.
+                    </p>
+                </div>
             </div>
 
             <!-- ======================================== -->
             <!-- HISTORIAL DE PRÉSTAMOS DEVUELTOS         -->
             <!-- ======================================== -->
-            <h3 class="seccion__subtitulo seccion__subtitulo--historial">📁 Historial de Préstamos Devueltos</h3>
-            <div class="historial-acciones">
-                <button class="btn btn--secundario btn--pequeno" id="btn-eliminar-todos-devueltos">
-                    🗑️ Eliminar todos los devueltos
-                </button>
-            </div>
-            <div class="tabla-contenedor">
-                <table class="tabla" id="tabla-prestamos-devueltos">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Equipo</th>
-                            <th>Responsable</th>
-                            <th>Identificación</th>
-                            <th>Fecha Préstamo</th>
-                            <th>Fecha Devolución</th>
-                            <th>Estado</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cuerpo-tabla-prestamos-devueltos">
-                        <!-- Se llena dinámicamente con JavaScript -->
-                    </tbody>
-                </table>
-                <p class="tabla__vacio" id="prestamos-devueltos-vacio" style="display:none;">
-                    No hay préstamos devueltos en el historial.
-                </p>
+            <div class="prestamos-bloque prestamos-bloque--historial">
+                <div class="historial-cabecera">
+                    <div class="bloque-titulo-fila">
+                        <h3 class="seccion__subtitulo seccion__subtitulo--historial">
+                            <span class="subtitulo-icono">📁</span> Historial de Préstamos Devueltos
+                        </h3>
+                        <span class="etiqueta-archivo">Histórico</span>
+                    </div>
+                    <div class="historial-acciones">
+                        <button class="btn btn--secundario btn--peligro-borde btn--pequeno" id="btn-eliminar-todos-devueltos">
+                            🗑️ Eliminar todos los devueltos
+                        </button>
+                    </div>
+                </div>
+                <div class="tabla-contenedor tabla-contenedor--historial">
+                    <table class="tabla" id="tabla-prestamos-devueltos">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">ID</th>
+                                <th>Equipo</th>
+                                <th>Responsable</th>
+                                <th>Identificación</th>
+                                <th>Fecha Préstamo</th>
+                                <th>Fecha Devolución</th>
+                                <th>Estado</th>
+                                <th style="width: 120px; text-align: center;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-tabla-prestamos-devueltos">
+                            <!-- Se llena dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                    <p class="tabla__vacio" id="prestamos-devueltos-vacio" style="display:none;">
+                        No hay préstamos devueltos en el historial.
+                    </p>
+                </div>
             </div>
         </section>
     </main>
@@ -277,8 +404,9 @@
     <!-- ============================================ -->
     <!-- MODAL DE CONFIRMACIÓN                        -->
     <!-- ============================================ -->
-    <div class="modal" id="modal-confirmar" style="display:none;">
+    <div class="modal" id="modal-confirmar" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-mensaje">
         <div class="modal__contenido">
+            <div class="modal__icono">⚠️</div>
             <p class="modal__mensaje" id="modal-mensaje">¿Está seguro?</p>
             <div class="modal__acciones">
                 <button class="btn btn--peligro" id="modal-btn-confirmar">Confirmar</button>
@@ -290,7 +418,7 @@
     <!-- ============================================ -->
     <!-- CONTENEDOR DE MENSAJES TOAST                 -->
     <!-- ============================================ -->
-    <div class="toast-contenedor" id="toast-contenedor"></div>
+    <div class="toast-contenedor" id="toast-contenedor" aria-live="polite"></div>
 
     <!-- ============================================ -->
     <!-- SCRIPTS (módulos ES)                         -->

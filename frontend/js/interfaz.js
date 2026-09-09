@@ -21,11 +21,73 @@ export function actualizarTarjetas(equipos, prestamos) {
     const mantenimiento = equipos.filter(e => e.ESTADO === 'MANTENIMIENTO').length;
     const prestamosActivos = prestamos.filter(p => p.ESTADO === 'ACTIVO').length;
 
-    document.getElementById('total-equipos').textContent = totalEquipos;
-    document.getElementById('total-disponibles').textContent = disponibles;
-    document.getElementById('total-prestados').textContent = prestados;
-    document.getElementById('total-mantenimiento').textContent = mantenimiento;
-    document.getElementById('total-prestamos-activos').textContent = prestamosActivos;
+    const elTotal = document.getElementById('total-equipos');
+    const elDisp = document.getElementById('total-disponibles');
+    const elPrest = document.getElementById('total-prestados');
+    const elMant = document.getElementById('total-mantenimiento');
+    const elActivos = document.getElementById('total-prestamos-activos');
+
+    if (elTotal) elTotal.textContent = totalEquipos;
+    if (elDisp) elDisp.textContent = disponibles;
+    if (elPrest) elPrest.textContent = prestados;
+    if (elMant) elMant.textContent = mantenimiento;
+    if (elActivos) elActivos.textContent = prestamosActivos;
+
+    // --- Resumen visual: Estado del Laboratorio ---
+    const pctDisp = totalEquipos > 0 ? Math.round((disponibles / totalEquipos) * 100) : 0;
+    const pctPrest = totalEquipos > 0 ? Math.round((prestados / totalEquipos) * 100) : 0;
+    const pctMant = totalEquipos > 0 ? Math.max(0, 100 - pctDisp - pctPrest) : 0;
+
+    const barraDisp = document.getElementById('barra-disp');
+    const barraPrest = document.getElementById('barra-prest');
+    const barraMant = document.getElementById('barra-mant');
+    if (barraDisp) barraDisp.style.width = `${pctDisp}%`;
+    if (barraPrest) barraPrest.style.width = `${pctPrest}%`;
+    if (barraMant) barraMant.style.width = `${pctMant}%`;
+
+    const elPctDisp = document.getElementById('pct-disponibles');
+    const elPctPrest = document.getElementById('pct-prestados');
+    const elPctMant = document.getElementById('pct-mantenimiento');
+    if (elPctDisp) elPctDisp.textContent = `${pctDisp}%`;
+    if (elPctPrest) elPctPrest.textContent = `${pctPrest}%`;
+    if (elPctMant) elPctMant.textContent = `${pctMant}%`;
+
+    const elCntDisp = document.getElementById('cnt-disponibles');
+    const elCntPrest = document.getElementById('cnt-prestados');
+    const elCntMant = document.getElementById('cnt-mantenimiento');
+    if (elCntDisp) elCntDisp.textContent = `(${disponibles} equipos)`;
+    if (elCntPrest) elCntPrest.textContent = `(${prestados} equipos)`;
+    if (elCntMant) elCntMant.textContent = `(${mantenimiento} equipos)`;
+
+    // --- Resumen visual: Actividad Reciente ---
+    const contenedorActividad = document.getElementById('lista-actividad-reciente');
+    if (contenedorActividad) {
+        if (!prestamos || prestamos.length === 0) {
+            contenedorActividad.innerHTML = '<p class="tabla__vacio" id="actividad-vacio">No hay registros de actividad reciente.</p>';
+        } else {
+            // Ordenar por ID descendente para mostrar los últimos registrados
+            const recientes = [...prestamos].sort((a, b) => (b.ID || 0) - (a.ID || 0)).slice(0, 5);
+            contenedorActividad.innerHTML = recientes.map(p => {
+                const esActivo = p.ESTADO === 'ACTIVO';
+                const claseBadge = esActivo ? 'badge--activo' : 'badge--devuelto';
+                const textoEstado = esActivo ? 'ACTIVO' : 'DEVUELTO';
+                const icono = esActivo ? '📤' : '📥';
+                return `
+                    <div class="actividad-fila">
+                        <div class="actividad-fila__icono">${icono}</div>
+                        <div class="actividad-fila__info">
+                            <strong class="actividad-fila__equipo">${p.EQUIPO_NOMBRE || 'Equipo #' + p.EQUIPO_ID}</strong>
+                            <span class="actividad-fila__responsable">${p.RESPONSABLE} &bull; ID: ${p.IDENTIFICACION}</span>
+                        </div>
+                        <div class="actividad-fila__meta">
+                            <span class="badge ${claseBadge}">${textoEstado}</span>
+                            <span class="actividad-fila__fecha">${formatearFecha(p.FECHA_PRESTAMO)}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
 }
 
 // ============================================================
